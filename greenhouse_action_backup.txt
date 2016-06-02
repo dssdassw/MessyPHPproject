@@ -1,0 +1,19 @@
+<html>
+	<head>
+		<title>Sensor Information</title>
+	</head>
+	<body>
+		<?php
+			$checkboxes = $_POST["boxes"];
+			if (isset($_POST["boxes"])) {
+				print array_values($boxes) . "</br>" . array_values($_POST);
+				foreach ($boxes as $box) {
+					print "1";
+				}
+			}
+			else {
+				print "Fuck mah life";
+			}
+		?>
+	</body>
+</html>

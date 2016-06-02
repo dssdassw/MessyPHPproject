@@ -1,0 +1,49 @@
+<html>
+	<head>
+		<title>Greenhouse info form</title>
+		<link rel=stylesheet type="text/css" href=greenhouse_form.css>
+	</head>
+	<body>
+		<form action=greenhouse_action.php method=post>
+			<h1>Greenhouse Info Form</h1>
+			<h3>pH</h3>
+			<div id=pH_form>
+				<input type=checkbox name=main_tank_pH>Main Tank pH</br>
+				<!--input type=checkbox name=small_tank_pH>Small Tank pH (I think it was removed)</-->
+			</div>
+			<h3>Dissolved O<sub>2</sub></h3>
+			<div id=o2_form>
+				<input type=checkbox name=main_tank_o2>Main Tank Dissolved O<sub>2</sub></br>
+				<!--input type=checkbox name=small_tank_o2>Small Tank Dissolved O<sub>2</sub></-->
+			</div>
+			<h3>Ambient Temperature</h3>
+			<div id=ambient_temp_form>
+				<h4>Zone 1</h4>
+				<div id=z1_ambient_temp_form>
+					<input type=checkbox name=z1_ceiling>Ceiling
+					<input type=checkbox name=z1_middle>Middle
+					<input type=checkbox name=z1_ground>Ground
+				</div>
+				<h4>Zone 2</h4>
+				<div id=z2_ambient_temp_form>
+					<input type=checkbox name=z2_ceiling>Ceiling
+					<input type=checkbox name=z2_middle>Middle
+					<input type=checkbox name=z2_ground>Ground
+				</div>
+				<h4>Zone 3</h4>
+				<div id=z3_ambient_temp_form>
+					<input type=checkbox name=z3_ceiling>Ceiling
+					<input type=checkbox name=z3_middle>Middle
+					<input type=checkbox name=z3_ground>Ground
+				</div>
+			</div>
+			<h3>Ambient Humidity</h3>
+			<div id=ambient_humidity_form>
+				<input type=checkbox name=z1_humidity>Zone 1</br>
+				<input type=checkbox name=z2_humidity>Zone 2</br>
+				<input type=checkbox name=z3_humidity>Zone 3
+			</div>
+			<input type=submit name="submit_btn">
+		</form>
+	</body>
+</html>
