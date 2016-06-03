@@ -2,47 +2,49 @@
 	<head>
 		<title>Greenhouse info form</title>
 		<link rel=stylesheet type="text/css" href=greenhouse_form.css>
+		<script type="text/javascript" src="select_all.js"></script>
 	</head>
 	<body>
+		<h1>Greenhouse Info Form</h1>
+		<button onclick="selectAll();">Select/Unselect All</button>
 		<form action=greenhouse_action.php method=post>
-			<h1>Greenhouse Info Form</h1>
 			<h3>Ambient Temperature</h3>
 			<div id=ambient_temp_form>
 				<h4>Zone 1</h4>
 				<div id=z1_ambient_temp_form>
-					<input type=checkbox name=main_tank_temp>Main Tank Temperature
-					<input type=checkbox name=main_tank_top>Main Tank Top Temperature
-					<input type=checkbox name=main_tank_middle>Main Tank Middle Temperature
-					<input type=checkbox name=main_tank_bottom>Main Tank Bottom Temperature
-					<input type=checkbox name=z1_ceiling>Ceiling
-					<input type=checkbox name=z1_ground>Ground
+					<input class=cb checked=false type=checkbox name=main_tank_temp>Main Tank Temperature
+					<input class=cb checked=false type=checkbox name=main_tank_top>Main Tank Top Temperature
+					<input class=cb checked=false type=checkbox name=main_tank_middle>Main Tank Middle Temperature
+					<input class=cb checked=false type=checkbox name=main_tank_bottom>Main Tank Bottom Temperature
+					<input class=cb checked=false type=checkbox name=z1_ceiling>Ceiling
+					<input class=cb checked=false type=checkbox name=z1_ground>Ground
 				</div>
 				<h4>Zone 2</h4>
 				<div id=z2_ambient_temp_form>
-					<input type=checkbox name=z2_ceiling>Ceiling
-					<input type=checkbox name=z2_ground>Ground
+					<input class=cb checked=false type=checkbox name=z2_ceiling>Ceiling
+					<input class=cb checked=false type=checkbox name=z2_ground>Ground
 				</div>
 				<h4>Zone 3</h4>
 				<div id=z3_ambient_temp_form>
-					<input type=checkbox name=z3_ceiling>Ceiling
-					<input type=checkbox name=z3_middle>Middle
-					<input type=checkbox name=z3_ground>Ground
-					<input type=checkbox name=small_tank_temp>Small Tank
+					<input class=cb checked=false type=checkbox name=z3_ceiling>Ceiling
+					<input class=cb checked=false type=checkbox name=z3_middle>Middle
+					<input class=cb checked=false type=checkbox name=z3_ground>Ground
+					<input class=cb checked=false type=checkbox name=small_tank_temp>Small Tank
 				</div>
 			</div>
 			<h3>Acididy/Basicity (pH)</h3>
 			<div id=pH_forms>
-				<input type=checkbox name=main_tank_pHa>Main Tank pH 1
-				<input type=checkbox name=main_tank_pHb>Main Tank pH 2
-				<input type=checkbox name=main_tank_pHc>Main Tank pH 3
-				<input type=checkbox name=main_tank_pHd>Main Tank pH 4 
+				<input class=cb checked=false type=checkbox name=main_tank_pHa>Main Tank pH 1
+				<input class=cb checked=false type=checkbox name=main_tank_pHb>Main Tank pH 2
+				<input class=cb checked=false type=checkbox name=main_tank_pHc>Main Tank pH 3
+				<input class=cb checked=false type=checkbox name=main_tank_pHd>Main Tank pH 4 
 			</div>
 			<h3>O<sub>2</sub></h3>
 			<div id=o2_forms></div>
-				<input type=checkbox name=main_tank_o2>Main Tank Dissolved O<sub>2</sub>
+				<input class=cb checked=false type=checkbox name=main_tank_o2>Main Tank Dissolved O<sub>2</sub>
 				<!--input type=checkbox name=small_tank_o2>Small Tank Dissolved O<sub>2</sub></-->
-				<input type=checkbox name=main_tank_rpot>Main Tank Oxidation Reduction Potential
-			</div>
+				<input class=cb checked=false type=checkbox name=main_tank_rpot>Main Tank Oxidation Reduction Potential
+			</div></br>
 			<input type=submit name="submit_btn">
 		</form>
 	</body>

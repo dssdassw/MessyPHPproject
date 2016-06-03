@@ -1,0 +1,1 @@
+var allSelected=false;for(i=0;i<elem.length;i++){if(elem.item(i).checked==false){allSelected=false;} elem.item(i).checked=true;}if(allSelected){for(i=0;i<elem.length;i++){}
