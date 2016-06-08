@@ -103,20 +103,38 @@
 			if ($db->connect_errno > 0) {
 				die('Unable to connect to database [' . $db->connect_error . ']');
 			}
-
+			$lastAccessDate = 
+<<<SQL
+	SELECT *
+	FROM SensorDataMaxDateTimex;
+SQL;
+			if (!$result = $db->query($lastAccessDate)) {
+				die('There was an error running the query [' . $db->error . ']');
+			}
+			print "<hr>" . $hrnames[$i] . "<table><tr><th>Date</th><th>Data</th></tr>";
+			$accessedLast = array();
+			while($row = $result->fetch_assoc()) {
+				$accessedLast[$row['xSensor_No']] = $row['xMaxDateTime'];
+			}
+			print_r($accessedLast);
+			$conn->close();
+			$db_main = new mysqli($db_host, $db_user, $db_pass, $db_name);
+			if ($db_main->connect_errno > 0) {
+				die('Unable to connect to database [' . $db_main->connect_error . ']');
+			}
 			for ($i = 0; $i < 18; $i++) {
 				$box = $_POST[($names[$i])];
 				//print "</br>" . $i . ". " . ($temp) . ": " . isset($val);
 				if ($box == 'on') {
 					$sql =
 <<<SQL
-	SELECT SampleDateTime,SensorData
+	SELECT DateTimeCreated,SensorData
 	FROM Aquaponics_Data
-	WHERE Sensor_No=$i AND DATE(SampleDateTime) BETWEEN $date_from AND $date_to
+	WHERE Sensor_No=$i AND DATE(DateTimeCreated) BETWEEN $date_from AND $date_to
 	LIMIT 10;
 SQL;
-					if (!$result = $db->query($sql)) {
-						die('There was an error running the query [' . $db->error . ']');
+					if (!$result = $db_main->query($sql)) {
+						die('There was an error running the query [' . $db_main->error . ']');
 					}
 					print "<hr>" . $hrnames[$i] . "<table><tr><th>Date</th><th>Data</th></tr>";
 					while($row = $result->fetch_assoc()){
