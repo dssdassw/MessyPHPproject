@@ -1,6 +1,6 @@
 function selectAll() {
 	var elem=document.getElementsByClassName('cb');
-	var allSelected=false;
+	var allSelected=true;
 	for(i=0;i<elem.length;i++){
 		if(elem.item(i).checked==false){
 			allSelected=false;

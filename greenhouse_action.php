@@ -1,6 +1,7 @@
 <html>
 	<head>
 		<title>Sensor Information</title>
+		<link rel=stylesheet type="text/css" href=stylesheet.css>
 	</head>
 	<body>
 		<?php
@@ -89,9 +90,12 @@
 							 16 => "Main Tank Middle Temperature",
 							 17 => "Main Tank Top Temperature"
 			);
-			$date_from = $_POST["fromdate"];
-			$date_to = $_POST["todate"];
+			$date_from = date($_POST["fromdate"]);
+			$date_to = date($_POST["todate"]);
 			print $date_from . " to " . $date_to;
+			if (strtotime($date_from) === strtotime($date_to)) {
+				$date_to = $date_to + 1;
+			}
 			error_reporting(E_ALL);
 			ini_set('display_errors', 1); //change to 0 on production server!
 			$db_name = 'ics';
@@ -112,15 +116,19 @@
 <<<SQL
 	SELECT SampleDateTime,SensorData
 	FROM Aquaponics_Data
-	WHERE Sensor_No=$i AND DATE(SampleDateTime) BETWEEN $date_from AND $date_to
+	WHERE Sensor_No=$i
 	LIMIT 10;
 SQL;
 					if (!$result = $db->query($sql)) {
 						die('There was an error running the query [' . $db->error . ']');
-					}
+					} // AND (DATE(SampleDateTime) >= $date_from AND DATE(SampleDateTime) <= $date_to)
+					// AND (CAST(SampleDateTime AS DATE) BETWEEN CAST($date_from AS DATE) AND CAST($date_to AS DATE))
 					print "<hr>" . $hrnames[$i] . "<table><tr><th>Date</th><th>Data</th></tr>";
 					while($row = $result->fetch_assoc()){
+						$data_date = date($row["SampleDateTime"]);
+						//if ((strtotime($data_date) >= strtotime($date_from)) && (strtotime($data_date) <= strtotime($date_to))) {
 						print "<tr><td>" . $row['SampleDateTime'] . "</td><td>" . $row['SensorData'] . "</td></tr>";
+						//}
 					}
 					print "</table>";
 				}
