@@ -2,30 +2,32 @@
 	<head>
 		<title>Sensor Information</title>
 		<link rel=stylesheet type="text/css" href=stylesheet.css>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<script type="text/javascript" src="chartdrawer.js"></script>
 	</head>
 	<body>
 		<?php
-			$names = array(0 => 'main_tank_temp',   //sensor 1  - T001
-						   1 => 'main_tank_rpot',   //sensor 2  - O001
+			$names = array(0 => $_POST['main_tank_temp'],   //sensor 1  - T001
+						   1 => $_POST['main_tank_rpot'],   //sensor 2  - O001
 													//sensor 3 omitted
-						   2 => 'main_tank_o2',		//sensor 4  - D001 
-						   3 => 'main_tank_pHa',	//sensor 5  - P001
+						   2 => $_POST['main_tank_o2'],		//sensor 4  - D001 
+						   3 => $_POST['main_tank_pHa'],	//sensor 5  - P001
 													//sensor 6 omitted
-						   4 => 'z3_ground',		//sensor 7  - T010
-						   5 => 'z3_middle',		//sensor 8  - T007
-						   6 => 'z3_ceiling',	    //sensor 9  - T006
-						   7 => 'small_tank_temp',  //sensor 10 - T011
-						   8 => 'z2_ceiling',	    //sensor 11 - T003
-						   9 => 'z2_middle',		//sensor 12 - T008
-						   10 => 'z1_ceiling',		//sensor 13 - T012
-						   11 => 'z1_ground',		//sensor 14 - T005
+						   4 => $_POST['z3_ground'],		//sensor 7  - T010
+						   5 => $_POST['z3_middle'],		//sensor 8  - T007
+						   6 => $_POST['z3_ceiling'],	    //sensor 9  - T006
+						   7 => $_POST['small_tank_temp'],  //sensor 10 - T011
+						   8 => $_POST['z2_ceiling'],	    //sensor 11 - T003
+						   9 => $_POST['z2_middle'],		//sensor 12 - T008
+						   10 => $_POST['z1_ceiling'],		//sensor 13 - T012
+						   11 => $_POST['z1_ground'],		//sensor 14 - T005
 													//sensor 15 omitted
-						   12 => 'main_tank_pHb',			//sensor 16 - PE01
-						   13 => 'main_tank_pHc',			//sensor 17 - PE02
-						   14 => 'main_tank_pHd',			//sensor 18 - PE03
-						   15 => 'main_tank_bottom', 		//sensor 19 - T020
-						   16 => 'main_tank_middle', 		//sensor 20 - T021
-						   17 => 'main_tank_top'			//sensor 21 - T022
+						   12 => $_POST['main_tank_pHb'],			//sensor 16 - PE01
+						   13 => $_POST['main_tank_pHc'],			//sensor 17 - PE02
+						   14 => $_POST['main_tank_pHd'],			//sensor 18 - PE03
+						   15 => $_POST['main_tank_bottom'], 		//sensor 19 - T020
+						   16 => $_POST['main_tank_middle'], 		//sensor 20 - T021
+						   17 => $_POST['main_tank_top']			//sensor 21 - T022
 			);
 			$senid = array(0 => 'T001',
 						   1 => 'O001',
@@ -90,14 +92,12 @@
 							 16 => "Main Tank Middle Temperature",
 							 17 => "Main Tank Top Temperature"
 			);
-			$date_from = date($_POST["fromdate"]);
-			$date_to = date($_POST["todate"]);
-			print $date_from . " to " . $date_to;
-			if (strtotime($date_from) === strtotime($date_to)) {
-				$date_to = $date_to + 1;
-			}
 			error_reporting(E_ALL);
 			ini_set('display_errors', 1); //change to 0 on production server!
+			$date_from = date("'Y-m-d H:i:s'", strtotime($_POST["fromdate"]));
+			$date_to = date("'Y-m-d H:i:s'", strtotime($_POST["todate"]));
+			print $date_from . " to " . $date_to;
+			$graph_results = $_POST['showgraph'];
 			$db_name = 'ics';
 			$db_user = 'ics';
 			$db_pass = 'password';
@@ -109,29 +109,34 @@
 			}
 
 			for ($i = 0; $i < 18; $i++) {
-				$box = $_POST[($names[$i])];
-				//print "</br>" . $i . ". " . ($temp) . ": " . isset($val);
-				if ($box == 'on') {
-					$sql =
+				if (!empty($names[$i])) { //eliminates spam of "undefined index" for unchecked checkboxes
+					$box = $names[$i];
+					if ($box == 'on') {
+						$sql =
 <<<SQL
-	SELECT SampleDateTime,SensorData
+	SELECT DATE(SampleDateTime) AS SampleDateTime,SensorData
 	FROM Aquaponics_Data
-	WHERE Sensor_No=$i
-	LIMIT 10;
+	WHERE Sensor_No=$i AND SampleDateTime BETWEEN CAST($date_from AS DATETIME) AND CAST($date_to AS DATETIME);
 SQL;
-					if (!$result = $db->query($sql)) {
-						die('There was an error running the query [' . $db->error . ']');
-					} // AND (DATE(SampleDateTime) >= $date_from AND DATE(SampleDateTime) <= $date_to)
-					// AND (CAST(SampleDateTime AS DATE) BETWEEN CAST($date_from AS DATE) AND CAST($date_to AS DATE))
-					print "<hr>" . $hrnames[$i] . "<table><tr><th>Date</th><th>Data</th></tr>";
-					while($row = $result->fetch_assoc()){
-						$data_date = date($row["SampleDateTime"]);
-						//if ((strtotime($data_date) >= strtotime($date_from)) && (strtotime($data_date) <= strtotime($date_to))) {
-						print "<tr><td>" . $row['SampleDateTime'] . "</td><td>" . $row['SensorData'] . "</td></tr>";
-						//}
+						if (!$result = $db->query($sql)) {// AND SampleDateTime BETWEEN $date_from AND $date_to;
+							die('There was an error running the query [' . $db->error . ']');
+						} // AND (DATE(SampleDateTime) >= $date_from AND DATE(SampleDateTime) <= $date_to)
+						// AND (CAST(SampleDateTime AS DATE) BETWEEN CAST($date_from AS DATE) AND CAST($date_to AS DATE))
+						print "<hr>" . $hrnames[$i] . "<table><tr><th>Date</th><th>Data</th></tr>";
+						while($row = $result->fetch_assoc()){
+							//print_r($row); //for debugging purposes only!
+							print "<tr><td>" . $row['SampleDateTime'] . "</td><td>" . $row['SensorData'] . "</td></tr>";
+							if ($graph_results == 'on') {
+								
+							}
+						}
+						print "</table>";
 					}
-					print "</table>";
 				}
+				//					if ($graph_results == 'on') {
+						//print "<script>function drawChart$i() {var data = google.visualisation.arrayToDataTable([['Date', 'Data'], ";
+					//}
+				//WHERE Sensor_No=$i AND DATE(SampleDateTime) >= DATE(STR_TO_DATE($date_from, '%Y-%m-%d')) AND DATE(SampleDateTime) < DATE(STR_TO_DATE($date_to, '%Y-%m-%d'));
 			}
 		?>
 	</body>
