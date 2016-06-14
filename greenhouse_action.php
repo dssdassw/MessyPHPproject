@@ -3,7 +3,9 @@
 		<title>Sensor Information</title>
 		<link rel=stylesheet type="text/css" href=stylesheet.css>
 		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-		<script type="text/javascript" src="chartdrawer.js"></script>
+		<script type="text/javascript">
+			google.charts.load('current', {'packages':['corechart']});
+		</script>
 	</head>
 	<body>
 		<?php
@@ -107,7 +109,9 @@
 			if ($db->connect_errno > 0) {
 				die('Unable to connect to database [' . $db->connect_error . ']');
 			}
-
+			if ($graph_results) {
+					$data_array = array();
+			}
 			for ($i = 0; $i < 18; $i++) {
 				if (!empty($names[$i])) { //eliminates spam of "undefined index" for unchecked checkboxes
 					$box = $names[$i];
@@ -120,17 +124,59 @@
 SQL;
 						if (!$result = $db->query($sql)) {// AND SampleDateTime BETWEEN $date_from AND $date_to;
 							die('There was an error running the query [' . $db->error . ']');
-						} // AND (DATE(SampleDateTime) >= $date_from AND DATE(SampleDateTime) <= $date_to)
-						// AND (CAST(SampleDateTime AS DATE) BETWEEN CAST($date_from AS DATE) AND CAST($date_to AS DATE))
-						print "<hr>" . $hrnames[$i] . "<table><tr><th>Date</th><th>Data</th></tr>";
+						}
+						
+						print "<hr>" . $hrnames[$i] . "<table class=bordered><tr class=bordered><th class=bordered>Date</th><th class=bordered>Data</th></tr>";
 						while($row = $result->fetch_assoc()){
-							//print_r($row); //for debugging purposes only!
-							print "<tr><td>" . $row['SampleDateTime'] . "</td><td>" . $row['SensorData'] . "</td></tr>";
+							print "<tr class=bordered><td class=bordered>" . $row['SampleDateTime'] . "</td><td class=bordered>" . $row['SensorData'] . "</td></tr>";
 							if ($graph_results == 'on') {
-								
+								array_push($data_array, $row);
 							}
 						}
+						$json_arr = json_encode($data_array);
 						print "</table>";
+						if ($graph_results) {
+							print "
+							<script>
+								google.charts.setOnLoadCallback(drawGraph$i);
+								function drawGraph$i() {
+									var jarray  = {$json_arr};
+									var jarr = [];
+									var swapper = false;
+									var date_arr  = [];
+									var value_arr = [];
+									for (i = 0; i < jarray.length; i++) {
+										for (var item in jarray[i]) {
+											if (swapper) {
+												value_arr.push(parseFloat(jarray[i][item]));
+											}
+											else {
+												date_arr.push(jarray[i][item]);
+											}
+											swapper = !swapper;
+										}
+									}
+									console.log(date_arr);
+									console.log(value_arr);
+									
+									var data  = new google.visualization.DataTable();
+									data.addColumn('string', 'Date');
+									data.addColumn('number', 'Value');
+									for (l = 0; l < date_arr.length; l++) { //both date_arr and value_arr should have the same value
+										data.addRow([date_arr[l], value_arr[l]]);
+										console.log('[' + date_arr[l] + ', ' + value_arr[l] + ']');
+									}
+									console.log('--------------');
+									var options = {
+										title: '$hrnames[$i]'
+									};
+									var graph = new google.visualization.LineChart(document.getElementById('graphdiv$i'));
+									graph.draw(data, options);
+								}
+							</script>
+							<div id=graphdiv$i'></div>"; 
+							$data_array = array();
+						}
 					}
 				}
 				//					if ($graph_results == 'on') {

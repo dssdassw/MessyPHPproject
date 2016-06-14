@@ -1,6 +1,10 @@
-table, th, td {
+.bordered {
 	border: 1px solid black;
 	border-collapse: collapse;
+	display: inline;
+}
+.borderless {
+	border: none;
 }
 div {
 	margin-left: 2%;
