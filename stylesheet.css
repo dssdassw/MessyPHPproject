@@ -34,6 +34,7 @@ h1 {
 	border: 3px solid #101050;
 	color: floralwhite;
 	text-align: center;
+	margin-bottom: 0px;
 }
 h3 {
 	display: inline-table;
@@ -55,4 +56,7 @@ h4 {
 	border-right:  3px hidden #101050;
 	border-top:  3px solid #101050;
 	border-bottom: 3px solid #101050;
+}
+tr, th, td {
+	padding: 5px;
 }

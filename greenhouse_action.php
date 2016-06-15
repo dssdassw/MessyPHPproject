@@ -2,9 +2,10 @@
 	<head>
 		<title>Sensor Information</title>
 		<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-		<link rel=stylesheet type="text/css" href=stylesheet.css>
-		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-		<script type="text/javascript">
+		<link rel=stylesheet type='text/css' href=stylesheet.css>
+		<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>
+		<script type='text/javascript' src='sort.js'></script>
+		<script type='text/javascript'>
 			google.charts.load('current', {'packages':['corechart']});
 		</script>
 	</head>
@@ -76,30 +77,30 @@
 						   16 => 20,
 						   17 => 21
 			);
-			$hrnames = array(0 => "Main Tank Temperature",
-							 1 => "Main Tank Oxidation Reduction Potential",
-							 2 => "Main Tank O<sub>2</sub>",
-							 3 => "Main Tank pH #1",
-							 4 => "Zone 3 Ground Temperature",
-							 5 => "Zone 3 Middle Temperature",
-							 6 => "Zone 3 Ceiling Temperature",
-							 7 => "Small Tank Temperature",
-							 8 => "Zone 2 Ceiling Temperature",
-							 9 => "Zone 2 Middle Temperature",
-							 10 => "Zone 1 Ceiling Temperature",
-							 11 => "Zone 1 Ground Temperature",
-							 12 => "Main Tank pH #2",
-							 13 => "Main Tank pH #3",
-							 14 => "Main Tank pH #4",
-							 15 => "Main Tank Bottom Temperature",
-							 16 => "Main Tank Middle Temperature",
-							 17 => "Main Tank Top Temperature"
+			$hrnames = array(0 => 'Main Tank Temperature',
+							 1 => 'Main Tank Oxidation Reduction Potential',
+							 2 => 'Main Tank O<sub>2</sub>',
+							 3 => 'Main Tank pH #1',
+							 4 => 'Zone 3 Ground Temperature',
+							 5 => 'Zone 3 Middle Temperature',
+							 6 => 'Zone 3 Ceiling Temperature',
+							 7 => 'Small Tank Temperature',
+							 8 => 'Zone 2 Ceiling Temperature',
+							 9 => 'Zone 2 Middle Temperature',
+							 10 => 'Zone 1 Ceiling Temperature',
+							 11 => 'Zone 1 Ground Temperature',
+							 12 => 'Main Tank pH #2',
+							 13 => 'Main Tank pH #3',
+							 14 => 'Main Tank pH #4',
+							 15 => 'Main Tank Bottom Temperature',
+							 16 => 'Main Tank Middle Temperature',
+							 17 => 'Main Tank Top Temperature'
 			);
 			error_reporting(E_ALL);
 			ini_set('display_errors', 1); //change to 0 on production server!
-			$date_from = date("'Y-m-d H:i:s'", strtotime($_POST["fromdate"]));
-			$date_to = date("'Y-m-d H:i:s'", strtotime($_POST["todate"]));
-			print $date_from . " to " . $date_to;
+			$date_from = date("'Y-m-d H:i:s'", strtotime($_POST['fromdate']));
+			$date_to = date("'Y-m-d H:i:s'", strtotime($_POST['todate']));
+			print $date_from . ' to ' . $date_to;
 			$graph_results = $_POST['showgraph'];
 			$db_name = 'ics';
 			$db_user = 'ics';
@@ -127,15 +128,15 @@ SQL;
 							die('There was an error running the query [' . $db->error . ']');
 						}
 						
-						print "<hr>" . $hrnames[$i] . "<table class=bordered><tr class=bordered><th class=bordered>Date</th><th class=bordered>Data</th></tr>";
+						print '<hr>' . $hrnames[$i] . '<table class=bordered><tr class=bordered><th class=bordered><button onclick="sort_date();">Date</button></th><th class=bordered><button onclick="sort_data();">Data</button></th></tr>';
 						while($row = $result->fetch_assoc()){
-							print "<tr class=bordered><td class=bordered>" . $row['SampleDateTime'] . "</td><td class=bordered>" . $row['SensorData'] . "</td></tr>";
+							print '<tr class=bordered><td class=bordered>' . $row['SampleDateTime'] . '</td><td class=bordered>' . $row['SensorData'] . '</td></tr>';
 							if ($graph_results == 'on') {
 								array_push($data_array, $row);
 							}
 						}
 						$json_arr = json_encode($data_array);
-						print "</table>";
+						print '</table>';
 						if ($graph_results) {
 							print "
 							<script>
