@@ -1,3 +1,12 @@
+body {
+	font-family: Roboto;
+	outline-color: darkgreen;
+	outline-style: double;
+	outline-width: 10px;
+	padding: 20px;
+	margin: 20px;
+	background-color: mintcream;
+}
 .bordered {
 	border: 1px solid black;
 	border-collapse: collapse;
@@ -8,4 +17,42 @@
 }
 div {
 	margin-left: 2%;
+}
+input[type=checkbox] {
+	padding: 15px 5px 15px 5px;
+}
+img {
+	display: inline-block;
+	float: right;
+	margin-top: -8%;
+	margin-right: 6%;
+	height: 256;
+	width: 298.5;
+}
+h1 {
+	background-color: #101050;
+	border: 3px solid #101050;
+	color: floralwhite;
+	text-align: center;
+}
+h3 {
+	display: inline-table;
+	margin-bottom: 10px;
+	border-left: 3px hidden #101050;
+	border-right:  3px hidden #101050;
+	border-top:  3px hidden #101050;
+	border-bottom: 3px solid #101050;
+}
+h4 {
+	padding-top: 0px;
+	margin-top: 0.5%;
+	margin-bottom: 0.5%;
+}
+.controls {
+	margin-left: 0px;
+	padding: 5px 5px 5px 5px;
+	border-left: 3px hidden #101050;
+	border-right:  3px hidden #101050;
+	border-top:  3px solid #101050;
+	border-bottom: 3px solid #101050;
 }

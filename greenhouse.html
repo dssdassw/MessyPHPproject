@@ -1,73 +1,57 @@
 <html>
 	<head>
 		<title>Greenhouse info form</title>
+		<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 		<link rel=stylesheet type="text/css" href=stylesheet.css>
 		<script type="text/javascript" src="select_all.js"></script>
 	</head>
 	<body>
 		<h1>Greenhouse Info Form</h1>
-		<button onclick="selectAll();">Select/Unselect All</button>
+		
 		<form action=greenhouse_action.php method=post>
 			<h3>Ambient Temperature</h3>
 			<div id=ambient_temp_form>
 				<h4>Zone 1</h4>
 				<div id=z1_ambient_temp_form>
-					<input class=cb checked=false type=checkbox name=main_tank_temp>Main Tank Temperature
-					<input class=cb checked=false type=checkbox name=main_tank_top>Main Tank Top Temperature
-					<input class=cb checked=false type=checkbox name=main_tank_middle>Main Tank Middle Temperature
-					<input class=cb checked=false type=checkbox name=main_tank_bottom>Main Tank Bottom Temperature
-					<input class=cb checked=false type=checkbox name=z1_ceiling>Ceiling
-					<input class=cb checked=false type=checkbox name=z1_ground>Ground
+					<input class=cb checked=false type=checkbox name=main_tank_temp><label>Main Tank Temperature</label>
+					<input class=cb checked=false type=checkbox name=main_tank_top><label>Main Tank Top Temperature</label>
+					<input class=cb checked=false type=checkbox name=main_tank_middle><label>Main Tank Middle Temperature</label>
+					<input class=cb checked=false type=checkbox name=main_tank_bottom><label>Main Tank Bottom Temperature</label>
+					<input class=cb checked=false type=checkbox name=z1_ceiling><label>Ceiling</label>
+					<input class=cb checked=false type=checkbox name=z1_ground><label>Ground</label>
 				</div>
 				<h4>Zone 2</h4>
 				<div id=z2_ambient_temp_form>
-					<input class=cb checked=false type=checkbox name=z2_ceiling>Ceiling
-					<input class=cb checked=false type=checkbox name=z2_middle>Middle
-					<input class=cb checked=false type=checkbox name=z2_ground>Ground
+					<input class=cb checked=false type=checkbox name=z2_ceiling><label>Ceiling</label>
+					<input class=cb checked=false type=checkbox name=z2_middle><label>Middle</label>
+					<input class=cb checked=false type=checkbox name=z2_ground><label>Ground</label>
 				</div>
 				<h4>Zone 3</h4>
 				<div id=z3_ambient_temp_form>
-					<input class=cb checked=false type=checkbox name=z3_ceiling>Ceiling
-					<input class=cb checked=false type=checkbox name=z3_middle>Middle
-					<input class=cb checked=false type=checkbox name=z3_ground>Ground
-					<input class=cb checked=false type=checkbox name=small_tank_temp>Small Tank
+					<input class=cb checked=false type=checkbox name=z3_ceiling><label>Ceiling</label>
+					<input class=cb checked=false type=checkbox name=z3_middle><label>Middle</label>
+					<input class=cb checked=false type=checkbox name=z3_ground><label>Ground</label>
+					<input class=cb checked=false type=checkbox name=small_tank_temp><label>Small Tank</label>
 				</div>
 			</div>
+			<img src="NDLeprechaun.png" alt="Notre Dame">
 			<h3>Acididy/Basicity (pH)</h3>
 			<div id=pH_forms>
-				<input class=cb checked=false type=checkbox name=main_tank_pHa>Main Tank pH 1
-				<input class=cb checked=false type=checkbox name=main_tank_pHb>Main Tank pH 2
-				<input class=cb checked=false type=checkbox name=main_tank_pHc>Main Tank pH 3
-				<input class=cb checked=false type=checkbox name=main_tank_pHd>Main Tank pH 4 
+				<input class=cb checked=false type=checkbox name=main_tank_pHa><label>Main Tank pH 1</label>
+				<input class=cb checked=false type=checkbox name=main_tank_pHb><label>Main Tank pH 2</label>
+				<input class=cb checked=false type=checkbox name=main_tank_pHc><label>Main Tank pH 3</label>
+				<input class=cb checked=false type=checkbox name=main_tank_pHd><label>Main Tank pH 4</label> 
 			</div>
 			<h3>O<sub>2</sub></h3>
-			<div id=o2_forms></div>
-				<input class=cb checked=false type=checkbox name=main_tank_o2>Main Tank Dissolved O<sub>2</sub>
-				<!--input type=checkbox name=small_tank_o2>Small Tank Dissolved O<sub>2</sub></-->
-				<input class=cb checked=false type=checkbox name=main_tank_rpot>Main Tank Oxidation Reduction Potential
+			<div id=o2_forms>
+				<input class=cb checked=false type=checkbox name=main_tank_o2><label>Main Tank Dissolved O<sub>2</sub></label>
+				<input class=cb checked=false type=checkbox name=main_tank_rpot><label>Main Tank Oxidation Reduction Potential</label>
 			</div>
 			<br/>
-			<hr>
-			<!--Script is inline here because it is more convenient; I don't want to make a separate file for a function that will only run once per page;
-			doing it this way also ensures it cannot be called from elsewhere, not that that would be harmful.</-->
-			<script>
-				var today = new Date();
-				var dd = today.getDate();
-				var mm = today.getMonth()+1; //offset 0-index
-				var yyyy = today.getFullYear();
-				if(dd<10) {
-					dd='0'+dd
-				}
-				if(mm<10) {
-					mm='0'+mm
-				}
-				today = mm+'/'+dd+'/'+yyyy;
-				
-				document.getElementById("to").value = today;
-			</script>
-			<p style="display:inline">Fetch records from <input id=from style="display: inline;" type=date name=fromdate value="2015-01-05"> to <input id=to style="display: inline;" type=date name=todate value="2016-08-06"></p>
-			<input type=submit name="submit_btn"><input class=cb checked=false type=checkbox name=showgraph><span>Graph results</span>
-			<hr>
+			<div class=controls>
+				<p style="display:inline">Fetch records from <input id=from style="display: inline;" type=date name=fromdate value="2015-01-05"> to <input id=to style="display: inline;" type=date name=todate value="2016-08-06"></p>
+				<input type=submit name="submit_btn"><input class=cb checked=false type=checkbox name=showgraph><span>Graph results</span><button style="float:right" onclick="selectAll();">Select/Unselect All</button>
+			</div>
 		</form>
 	</body>
 </html>
