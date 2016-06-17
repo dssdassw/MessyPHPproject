@@ -7,20 +7,24 @@ body {
 	margin: 20px;
 	background-color: mintcream;
 }
-.bordered {
+
+.bordered, .no-sort {
 	border: 1px solid black;
 	border-collapse: collapse;
-	display: inline;
 }
+
 .borderless {
 	border: none;
 }
+
 div {
 	margin-left: 2%;
 }
+
 input[type=checkbox] {
 	padding: 15px 5px 15px 5px;
 }
+
 img {
 	display: inline-block;
 	float: right;
@@ -29,6 +33,7 @@ img {
 	height: 256;
 	width: 298.5;
 }
+
 h1 {
 	background-color: #101050;
 	border: 3px solid #101050;
@@ -36,6 +41,7 @@ h1 {
 	text-align: center;
 	margin-bottom: 0px;
 }
+
 h3 {
 	display: inline-table;
 	margin-bottom: 10px;
@@ -44,11 +50,13 @@ h3 {
 	border-top:  3px hidden #101050;
 	border-bottom: 3px solid #101050;
 }
+
 h4 {
 	padding-top: 0px;
 	margin-top: 0.5%;
 	margin-bottom: 0.5%;
 }
+
 .controls {
 	margin-left: 0px;
 	padding: 5px 5px 5px 5px;
@@ -57,6 +65,18 @@ h4 {
 	border-top:  3px solid #101050;
 	border-bottom: 3px solid #101050;
 }
+
 tr, th, td {
 	padding: 5px;
+}
+
+.prettybutton {
+	background-color: darkgreen;
+	border: none;
+	color: white;
+	padding: 12px 29px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 15px;
 }

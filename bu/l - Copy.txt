@@ -1,1 +1,0 @@
-						print '<hr>' . $hrnames[$i] . '<table class=bordered><tr class=bordered><th class=bordered><button onclick="sortDate();">Date</button></th><th class=bordered><button onclick="sortData();">Data</button></th></tr>';

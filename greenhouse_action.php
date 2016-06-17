@@ -4,7 +4,40 @@
 		<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 		<link rel=stylesheet type='text/css' href=stylesheet.css>
 		<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>
+		<script type='text/javascript' src='tablesort.min.js'></script>
+		<script type='text/javascript' src='tablesort.number.js'></script>
+		<script type='text/javascript' src='tablesort.date.js'></script>
 		<script type='text/javascript' src='sort.js'></script>
+		<script type='text/javascript'>
+			var sorttypes = document.getElementsByName('sorttype');
+			var selected = 0;
+			/*for (var s = 0; s < sorttypes.length; s++) { 
+				if (sorttypes[s].checked) {
+					selected = sorttypes[s].value;
+				}
+			}*/
+			if (selected == 0) {
+				var datesorted = false;
+				var datasorted = false;
+			}/*else if (selected == 1) {
+				var datesorted = true;
+				var datasorted = false;
+			} else if (selected == 2) {
+				var datesorted = false;
+				var datasorted = true;
+			}*/ //this code would have been used for the MySQL sort to make sure ascending & descending functioned as expected, but in the end I didn't actually have time to finish that, so I removed it
+			//also for some reason the sorting doesn't work unless you have it in script and in an external .js file
+			function sort_date(i) { //uses code by github user tristen!
+				var tableid = "table" + i;
+				return new Tablesort(document.getElementById(tableid), {descending: datesorted});
+				datesorted = !datesorted;
+			}
+			function sort_data(i) { //uses code by github user tristen!
+				var tableid = "table" + i;
+				return new Tablesort(document.getElementById(tableid), {descending: datasorted});
+				datasorted = !datasorted;
+			} //needs tablesort.min.js
+		</script>
 		<script type='text/javascript'>
 			google.charts.load('current', {'packages':['corechart']});
 		</script>
@@ -101,6 +134,7 @@
 			$date_from = date("'Y-m-d H:i:s'", strtotime($_POST['fromdate']));
 			$date_to = date("'Y-m-d H:i:s'", strtotime($_POST['todate']));
 			print $date_from . ' to ' . $date_to;
+			print "</br>NOTE: With large tables, the sorting may seem to not work, but just be patient.";
 			$graph_results = $_POST['showgraph'];
 			$db_name = 'ics';
 			$db_user = 'ics';
@@ -128,15 +162,17 @@ SQL;
 							die('There was an error running the query [' . $db->error . ']');
 						}
 						
-						print '<hr>' . $hrnames[$i] . '<table class=bordered><tr class=bordered><th class=bordered><button onclick="sort_date();">Date</button></th><th class=bordered><button onclick="sort_data();">Data</button></th></tr>';
+						print '<hr>' . $hrnames[$i] . "<TABLE id=table$i class=bordered><tr class=no-sort><th class=bordered><button onclick='sort_date($i);' class=prettybutton>Date</button></th><th class=bordered><button onclick='sort_data($i);' class=prettybutton>Data</button></th></tr>";
 						while($row = $result->fetch_assoc()){
 							print '<tr class=bordered><td class=bordered>' . $row['SampleDateTime'] . '</td><td class=bordered>' . $row['SensorData'] . '</td></tr>';
 							if ($graph_results == 'on') {
 								array_push($data_array, $row);
 							}
 						}
-						$json_arr = json_encode($data_array);
-						print '</table>';
+						if ($graph_results == 'on') {
+								$json_arr = json_encode($data_array);
+						}
+						print '</TABLE>';
 						if ($graph_results) {
 							print "
 							<script>
@@ -157,16 +193,12 @@ SQL;
 											}
 											swapper = !swapper;
 										}
-									}
-									console.log(date_arr);
-									console.log(value_arr);
-									
+									}						
 									var data  = new google.visualization.DataTable();
 									data.addColumn('string', 'Date');
 									data.addColumn('number', 'Value');
 									for (l = 0; l < date_arr.length; l++) { //both date_arr and value_arr should have the same value
 										data.addRow([date_arr[l], value_arr[l]]);
-										console.log('[' + date_arr[l] + ', ' + value_arr[l] + ']');
 									}
 									console.log('--------------');
 									var options = {
@@ -176,7 +208,7 @@ SQL;
 									graph.draw(data, options);
 								}
 							</script>
-							<div id=graphdiv$i'></div>"; 
+							<div id=graphdiv$i></div>"; 
 							$data_array = array();
 						}
 					}

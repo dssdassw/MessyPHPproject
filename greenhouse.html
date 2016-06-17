@@ -7,7 +7,7 @@
 	</head>
 	<body>
 		<h1>Greenhouse Info Form</h1>
-		<button style="float:right; display:inline-block; float:right; margin: inherit;" onclick="selectAll();">Select/Unselect All</button>
+		<button style="float:right; display:inline-block; float:right; margin: inherit;" class="prettybutton" onclick="selectAll();">Select/Unselect All</button>
 		<form action=greenhouse_action.php method=post>
 			<h3>Ambient Temperature</h3>
 			<div id=ambient_temp_form>
@@ -51,7 +51,7 @@
 			<div class=controls>
 				<p style="display:inline">Fetch records from <input id=from style="display: inline;" type=date name=fromdate value="2015-01-05"> to <input id=to style="display: inline;" type=date name=todate value="2016-08-06"></p>
 				<input type=submit name="submit_btn"><input class=cb checked=false type=checkbox name=showgraph><span>Graph results</span>
-				<span>Sorting Type</span><input type=radio name=sorttype value=0><label>By Date</label><input type=radio name=sorttype value=1><label>By Value</label>
+				<span>| Sorting Type</span><input type=radio name=sorttype checked=true value=0><label>No Default Sort</label><!--input type=radio name=sorttype value=1><label>By Date</label><input type=radio name=sorttype value=2><label>By Value</label-->
 			</div>
 		</form>
 	</body>
